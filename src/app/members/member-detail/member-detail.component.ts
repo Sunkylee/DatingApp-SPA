@@ -1,10 +1,10 @@
-import { Photo } from './../../_models/photo';
+
 import { AlertifyService } from './../../_services/alertify.service';
 import { UserService } from './../../_services/user.service';
 import { Component, OnInit } from '@angular/core';
 import { User } from 'src/app/_models/user';
 import { ActivatedRoute } from '@angular/router';
-import { NgxGalleryAnimation, NgxGalleryImage, NgxGalleryOptions } from 'ngx-gallery';
+import { NgxGalleryAnimation, NgxGalleryImage, NgxGalleryOptions } from '@kolkov/ngx-gallery';
 
 @Component({
   selector: 'app-member-detail',
@@ -36,23 +36,24 @@ export class MemberDetailComponent implements OnInit {
       }
      ]
 
-     this.galleryOptions = this.getImages();
+     this.galleryImages = this.getImages();
   }
 
-   getImages(){
+   getImages()
+   {
          const imageUrls = [];
 
-       for(const photo of this.user.photos){
-
+       for(const photo of this.user.photos)
+       {
+    
         imageUrls.push({
 
           small: photo.url,
           medium: photo.url,
-          big: photo.url,
-          description: photo.description
-
+          big: photo.url
+        
         });
-
+      
        }
 
        return imageUrls;

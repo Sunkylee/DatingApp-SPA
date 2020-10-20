@@ -1,12 +1,19 @@
+import { MemberEditResolver } from './_resolver/member-edit-resolver';
+
 import { UserService } from './_services/user.service';
 import { AlertifyService } from './_services/alertify.service';
 import { appRoutes } from './routes';
 import { ErrorInterceptorProvider } from './interceptor/error.interceptor';
 import { AuthService } from './_services/auth.service';
 import { MemberDetailResolver } from './_resolver/member-detail-resolver';
+import { AuthGuard } from './_guards/auth.guard';
+import { MemberListResolver } from './_resolver/member-list-resolver';
+import { PreventUnsavedChanges } from './_guards/prevent-unsaved-changes.guard';
+
 
 
 import { BrowserModule, HammerGestureConfig, HAMMER_GESTURE_CONFIG } from '@angular/platform-browser';
+//import { BrowserModule} from '@angular/platform-browser';
 import { NgModule, NO_ERRORS_SCHEMA } from '@angular/core';
 import {HttpClientModule} from '@angular/common/http';
 import { FormsModule } from '@angular/forms';
@@ -15,7 +22,7 @@ import { TabsModule } from 'ngx-bootstrap/tabs';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { RouterModule } from '@angular/router';
 import { JwtModule } from '@auth0/angular-jwt';
-import { NgxGalleryModule } from 'ngx-gallery';
+import { NgxGalleryModule } from '@kolkov/ngx-gallery';
 
 
 
@@ -28,8 +35,8 @@ import { ListComponent } from './list/list.component';
 import { MessagesComponent } from './messages/messages.component';
 import { MemberCardComponent } from './members/member-card/member-card.component';
 import { MemberDetailComponent } from './members/member-detail/member-detail.component';
-import { AuthGuard } from './_guards/auth.guard';
-import { MemberListResolver } from './_resolver/member-list-resolver';
+import { MemberEditComponent } from './members/member-edit/member-edit.component';
+
 
 
 
@@ -56,7 +63,8 @@ export class CustomHammerConfig extends HammerGestureConfig {
       ListComponent,
       MessagesComponent,
       MemberCardComponent,
-      MemberDetailComponent
+      MemberDetailComponent,
+      MemberEditComponent
    ],
   imports: [
     BrowserModule,
@@ -64,7 +72,7 @@ export class CustomHammerConfig extends HammerGestureConfig {
     FormsModule,
     BrowserAnimationsModule,
     BsDropdownModule.forRoot(),
-    NgxGalleryModule,
+    NgxGalleryModule, 
     TabsModule.forRoot(),
     RouterModule.forRoot(appRoutes),
     JwtModule.forRoot({
@@ -83,7 +91,9 @@ export class CustomHammerConfig extends HammerGestureConfig {
     AuthGuard,
     MemberDetailResolver,
     MemberListResolver,
-    {provide:HAMMER_GESTURE_CONFIG, useClass:CustomHammerConfig}
+    MemberEditResolver,
+    PreventUnsavedChanges,
+   {provide:HAMMER_GESTURE_CONFIG, useClass:CustomHammerConfig}
   ],
   bootstrap: [AppComponent],
   schemas: [NO_ERRORS_SCHEMA]

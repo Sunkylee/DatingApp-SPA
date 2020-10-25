@@ -21,10 +21,11 @@ export class MemberDetailComponent implements OnInit {
     private route: ActivatedRoute) { }
 
   ngOnInit() {
+
      this.route.data.subscribe(data =>{
        this.user = data['user']
      });
-
+    
      this.galleryOptions = [
       {
          width: '500px',
@@ -35,8 +36,9 @@ export class MemberDetailComponent implements OnInit {
          preview: false
       }
      ]
-
+    
      this.galleryImages = this.getImages();
+    
   }
 
    getImages()
@@ -47,11 +49,9 @@ export class MemberDetailComponent implements OnInit {
        {
     
         imageUrls.push({
-
           small: photo.url,
           medium: photo.url,
-          big: photo.url
-        
+          big: photo.url   
         });
       
        }

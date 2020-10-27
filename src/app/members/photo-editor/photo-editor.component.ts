@@ -13,7 +13,7 @@ import { environment } from 'src/environments/environment';
 })
 export class PhotoEditorComponent implements OnInit {
   @Input() photos: Photo[];
-  @Output() getMemberPhotoChange =  new EventEmitter<string>();
+ // @Output() getMemberPhotoChange =  new EventEmitter<string>();
   uploader: FileUploader;
   hasBaseDropZoneOver = false;
   baseUrl = environment.apiUrl;
@@ -67,10 +67,24 @@ export class PhotoEditorComponent implements OnInit {
        this.currentMain = this.photos.filter(p => p.isMain === true)[0];
        this.currentMain.isMain = false;
        photo.isMain = true;
-       this.getMemberPhotoChange.emit(photo.url)
+       this.authsService.changeMemberPhoto(photo.url);
+       this.authsService.currentUser.photoUrl = photo.url;
+       localStorage.setItem('user', JSON.stringify(this.authsService.currentUser));
+       //this.getMemberPhotoChange.emit(photo.url)
      }, error => {
          this.alertify.error(error)
      });
    }
+
+    deletePhoto(id: number){
+          this.alertify.confirm("Are you sure you want to delete this photo", () =>{
+            this.userService.deletePhoto(this.authsService.decodedToken.nameid, id).subscribe(() => {
+              this.photos.splice(this.photos.findIndex(p => p.id === id), 1);
+              this.alertify.success("Photo has been deleted");
+            }, error =>{
+              this.alertify.error('Failed to delete the photo')
+            })
+          });
+    }
 
 }
